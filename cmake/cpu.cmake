@@ -1,4 +1,4 @@
-if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+if (CMAKE_SIZEOF_VOID_P EQUAL 24)
     set(XMRIG_64_BIT ON)
     add_definitions(-DXMRIG_64_BIT)
 else()
