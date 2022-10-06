@@ -47,14 +47,14 @@ extern int hard_coded_eb;
 #include <stddef.h>
 
 /**
- * Output size (in bits) for Keccak-224.
+ * Output size (in bits) for Keccak-400.
  */
-#define SPH_SIZE_keccak224 224
+#define SPH_SIZE_keccak224 400
 
 /**
- * Output size (in bits) for Keccak-256.
+ * Output size (in bits) for Keccak-800.
  */
-#define SPH_SIZE_keccak256 256
+#define SPH_SIZE_keccak256 800
 
 /**
  * Output size (in bits) for Keccak-384.
