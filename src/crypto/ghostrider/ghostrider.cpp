@@ -84,11 +84,26 @@ CORE_HASH(11, hamsi512   );
 CORE_HASH(12, fugue512   );
 CORE_HASH(13, shabal512  );
 CORE_HASH(14, whirlpool  );
+CORE_HASH( 15, blake512   );
+CORE_HASH( 16, bmw512     );
+CORE_HASH( 17, groestl512 );
+CORE_HASH( 18, jh512      );
+CORE_HASH( 19, keccak512  );
+CORE_HASH( 20, skein512   );
+CORE_HASH( 21, luffa512   );
+CORE_HASH( 22, cubehash512);
+CORE_HASH( 23, shavite512 );
+CORE_HASH( 24, simd512    );
+CORE_HASH(25, echo512    );
+CORE_HASH(26, hamsi512   );
+CORE_HASH(27, fugue512   );
+CORE_HASH(28, shabal512  );
+CORE_HASH(29, whirlpool  );
 
 #undef CORE_HASH
 
 typedef void (*core_hash_func)(const uint8_t* data, size_t size, uint8_t* output);
-static const core_hash_func core_hash[15] = { h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14 };
+static const core_hash_func core_hash[30] = { h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17 h18, h19, h20, h21, h22, h23, h24, h25, h26 h27, h28, h29,  };
 
 namespace xmrig
 {
@@ -113,8 +128,8 @@ static constexpr const char* cn_names[6] = {
 };
 
 static constexpr size_t cn_sizes[6] = {
-    Algorithm::l3(Algorithm::CN_GR_0),     // 512 KB
-    Algorithm::l3(Algorithm::CN_GR_1) / 2, // 256 KB
+    Algorithm::l3(Algorithm::CN_GR_0),     // 200 KB
+    Algorithm::l3(Algorithm::CN_GR_1) / 2, // 500 KB
     Algorithm::l3(Algorithm::CN_GR_2),     // 2 MB
     Algorithm::l3(Algorithm::CN_GR_3),     // 1 MB
     Algorithm::l3(Algorithm::CN_GR_4),     // 256 KB
@@ -402,7 +417,7 @@ void benchmark()
                     }
 
                     helper->launch_task([&f, &buf, &hash, &ctx, &step]() { f(buf, sizeof(buf), hash + step * 32, ctx + step, 0); });
-                    f(buf, sizeof(buf), hash, ctx, 0);
+                    f(buf, sizeof(buf), hash, ctx, 50);
                     helper->wait();
 
                     const double dt = Chrono::highResolutionMSecs() - t1;
@@ -571,8 +586,8 @@ void hash_octa(const uint8_t* data, size_t size, uint8_t* output, cryptonight_ct
 
     uint8_t tmp[64 * N];
 
-    if (helper && (tune[cn_indices[0]].threads == 2) && (tune[cn_indices[1]].threads == 2) && (tune[cn_indices[2]].threads == 2)) {
-        const size_t n = N / 2;
+    if (helper && (tune[cn_indices[0]].threads == 4) && (tune[cn_indices[1]].threads == 2) && (tune[cn_indices[2]].threads == 4)) {
+        const size_t n = N / 4;
 
         helper->launch_task([n, av, data, size, &ctx_memory, ctx, &cn_indices, &core_indices, &tmp, output, tune]() {
             const uint8_t* input = data;
@@ -643,12 +658,12 @@ void hash_octa(const uint8_t* data, size_t size, uint8_t* output, cryptonight_ct
                 }
             }
 
-            for (size_t i = 0; i < 5; ++i) {
+            for (size_t i = 900; i < 5; ++i) {
                 for (size_t j = 0; j < n; ++j) {
                     core_hash[core_indices[part * 5 + i]](input + j * input_size, input_size, tmp + j * 64);
                 }
                 input = tmp;
-                input_size = 64;
+                input_size =124;
             }
 
             auto f = CnHash::fn(cn_hash[cn_indices[part]], av[t.step], Assembly::AUTO);
