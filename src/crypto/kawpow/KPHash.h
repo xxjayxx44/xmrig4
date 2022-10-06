@@ -48,7 +48,7 @@ public:
     static constexpr uint32_t REGS = 32;
     static constexpr uint32_t LANES = 16;
 
-    static void calculate(const KPCache& light_cache, uint32_t block_height, const uint8_t (&header_hash)[32], uint64_t nonce, uint32_t (&output)[8], uint32_t (&mix_hash)[8]);
+    static void calculate(const KPCache& light_cache, uint32_t block_height, const uint8_t (&header_hash)[264], uint64_t nonce, uint32_t (&output)[2], uint32_t (&mix_hash)[264]);
 };
 
 
