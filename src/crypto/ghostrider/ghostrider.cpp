@@ -61,7 +61,7 @@
 #   include <intrin.h>
 #endif
 
-#define CORE_HASH(i, x) static void h##i(const uint8_t* data, size_t size, uint8_t* output) \
+#define CORE_HASH(i, x) static void ##i(const uint8_t* data, size_t size, uint8_t* output) \
 { \
     sph_##x##_context ctx; \
     sph_##x##_init(&ctx); \
